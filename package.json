@@ -1,60 +1,62 @@
 {
-  "name": "outline-mcp-server",
-  "version": "5.2.1",
-  "description": "An MCP server for interacting with Outline's API",
-  "type": "module",
-  "bin": {
-    "outline-mcp-server": "./build/index.js",
-    "outline-mcp-server-stdio": "./build/stdio.js"
-  },
-  "files": [
-    "build"
-  ],
-  "author": {
-    "name": "Matt Frey",
-    "email": "iam@mattfrey.dev"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mmmeff/outline-mcp-server"
-  },
-  "scripts": {
-    "build": "tsc && chmod +x build/index.js && chmod +x build/stdio.js",
-    "prepare": "npm run build",
-    "watch": "bun --watch src/index.ts",
-    "watch:stdio": "bun --watch src/stdio.ts",
-    "dev": "concurrently -n 'build,inspector' -c 'blue.bold,green.bold' 'npm run watch' 'npm run inspector'",
-    "inspector": "npx @modelcontextprotocol/inspector@latest",
-    "start": "bun build/index.js",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
-    "semantic-release": "semantic-release"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "1.13.1",
-    "axios": "1.10.0",
-    "dotenv": "16.5.0",
-    "fastify": "5.4.0",
-    "omit-ts": "^2.0.1",
-    "zod": "3.25.67"
-  },
-  "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@types/node": "20.19.1",
-    "bun": "^1.2.17",
-    "concurrently": "^9.2.0",
-    "prettier": "3.6.0",
-    "semantic-release": "^22.0.12",
-    "typescript": "5.x"
-  },
-  "keywords": [
-    "outline",
-    "mcp",
-    "getoutline.com",
-    "model-context-protocol"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=20"
-  }
+    "name": "outline-mcp-server",
+    "version": "5.2.1",
+    "description": "An MCP server for interacting with Outline's API",
+    "type": "module",
+    "bin": {
+        "outline-mcp-server": "./build/index.js",
+        "outline-mcp-server-stdio": "./build/stdio.js"
+    },
+    "files": [
+        "build"
+    ],
+    "author": {
+        "name": "Matt Frey",
+        "email": "iam@mattfrey.dev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mmmeff/outline-mcp-server"
+    },
+    "scripts": {
+        "build": "yarn clean && swc src -d build --strip-leading-paths && chmod +x build/index.js && cp src/.env build/.env",
+        "clean": "rm -rf build",
+        "prepare": "yarn build",
+        "watch": "node --watch --import tsx src/index.ts",
+        "dev": "concurrently -n 'build,inspector' -c 'blue.bold,green.bold' 'yarn watch' 'yarn inspector'",
+        "inspector": "npx @modelcontextprotocol/inspector@latest",
+        "start": "node build/index.js",
+        "format": "biome format --write src/",
+        "lint": "biome check --write src/",
+        "lint:fix": "biome check --write --unsafe src/",
+        "semantic-release": "semantic-release"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "1.13.2",
+        "axios": "1.10.0",
+        "dotenv": "17.0.0",
+        "fastify": "5.4.0",
+        "zod": "3.25.67"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "2.0.6",
+        "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/git": "^10.0.1",
+        "@swc/cli": "^0.7.7",
+        "@swc/core": "^1.12.7",
+        "@types/node": "24.0.7",
+        "concurrently": "^9.2.0",
+        "semantic-release": "24.2.6"
+    },
+    "keywords": [
+        "outline",
+        "mcp",
+        "getoutline.com",
+        "model-context-protocol"
+    ],
+    "license": "MIT",
+    "engines": {
+        "node": ">=20"
+    },
+    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
